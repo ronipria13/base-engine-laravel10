@@ -5,6 +5,7 @@
         return {
             openModal : false,
             formState : 'save',
+            loadingState: false,
             idData : null,
             successAlert: {
                 open: false,
@@ -30,6 +31,7 @@
             },
             confirmSave() {
                 const title = this.formState == 'edit' ? 'Ubah data?' : 'Simpan data?'
+                this.loadingState = true
                 
                 Swal.fire({
                 title: title,
@@ -43,29 +45,30 @@
                     if (result.isConfirmed) {
                         this.saveData()
                     }
+                    else this.loadingState = false
                 })
             },
             async saveData() {
                     try {
-                        const response = this.formState == 'save' ? await axios.post('{{ env('APP_URL') }}/managements/controllers', this.form) 
-                                                                : await axios.put('{{ env('APP_URL') }}/managements/controllers/' + this.idData, this.form)
-                        if(response.status == 200) {
+                        // const response = this.formState == 'save' ? await axios.post('{{ env('APP_URL') }}/managements/controllers', this.form) 
+                        //                                         : await axios.put('{{ env('APP_URL') }}/managements/controllers/' + this.idData, this.form)
+                        // if(response.status == 200) {
                             
-                            Swal.fire({
-                                icon: 'success',
-                                title: response.data.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
+                        //     Swal.fire({
+                        //         icon: 'success',
+                        //         title: response.data.message,
+                        //         showConfirmButton: false,
+                        //         timer: 1500
+                        //     })
 
-                            this.successAlert = {
-                                open: true,
-                                message: response.data.message
-                            }
-                            this.openModal = false
-                            this.resetForm()
-                            this.datatable.refreshTable()
-                        }
+                        //     this.successAlert = {
+                        //         open: true,
+                        //         message: response.data.message
+                        //     }
+                        //     this.openModal = false
+                        //     this.resetForm()
+                        //     this.datatable.refreshTable()
+                        // }
                     } catch (e) {
                         if(e.response.status == 422) {
                             console.log(e.response);

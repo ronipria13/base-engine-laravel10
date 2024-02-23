@@ -56,9 +56,15 @@
                     <i class="fa fa-times-circle"></i>
                     Cancel
                 </button>
-                <button type="submit" class="relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400">
-                    <i class="fa fa-check-circle"></i>
-                    Save
+                <button type="submit" 
+                    class="relative text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400"
+                    :class="loadingState ? `disabled cursor-wait bg-blue-700` : `bg-blue-500 hover:bg-blue-700`"
+                    :disabled="loadingState"
+                >
+                    <template x-if="!loadingState">
+                        <i class="fa fa-check-circle"></i>    
+                    </template> 
+                    <span x-text="loadingState ? `Loading...` : `Save`" ></span>
                 </button>
             </div>
         </form>

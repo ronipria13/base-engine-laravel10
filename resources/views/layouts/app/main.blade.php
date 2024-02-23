@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
     @vite('resources/css/tom-select.default.css')
+    @vite('resources/css/font-awesome.css')
     
     <link rel="icon" type="image/png" href="{{ asset('images/985px-Laravel.svg.png') }}">
     <title>{{ env("APP_NAME", "Laravel") }}@yield('title')</title>
