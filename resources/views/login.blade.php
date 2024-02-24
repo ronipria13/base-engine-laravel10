@@ -36,7 +36,7 @@
                     Silakan login
                 </p>
                 <form action="" @submit.prevent="auth" class="sm:w-2/3 w-full px-4 lg:px-0 mx-auto">
-                    <div x-show="alertBar" class="px-4 py-4 mt-3 leading-normal text-red-800 bg-red-300 rounded-lg" role="alert">
+                    <div x-cloak x-show="alertBar" class="px-4 py-4 mt-3 leading-normal text-red-800 bg-red-300 rounded-lg" role="alert">
                         <p x-text="alertMsg">A simple alert with text</p>
                     </div>
                     <div class="pb-2 pt-4">
@@ -89,8 +89,8 @@
                         const response = await axios.post('{{ env('APP_URL') }}/',this.form);
                         if(response.data.success){
                             window.location.reload();
+                            this.loading = false
                         }
-                        this.loading = false
                         this.labelBtnSignIn = "sign in"
                     } catch (e) {
                         
