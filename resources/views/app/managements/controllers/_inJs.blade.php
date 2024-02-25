@@ -137,7 +137,6 @@
             },
             async deleteData() {
                 try {
-                    this.loadingState = true
                     const response = await axios.delete('{{ env('APP_URL') }}/managements/controllers/'+this.idData);
                     if(response.status == 200) {
                     

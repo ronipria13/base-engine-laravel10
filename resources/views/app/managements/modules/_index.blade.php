@@ -15,9 +15,16 @@
     <x-modal :value="1">
         <x-slot name="trigger">
             <button  @click="addData"
-            class="relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400">
-                <i class="fa fa-plus"></i>
-                Tambah Data
+            class="relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400 disabled:cursor-wait disabled:bg-blue-700"
+            :disabled="loadingState"
+            >
+                <template x-if="!loadingState">
+                    <i class="fa fa-plus"></i>
+                </template>
+                <template x-if="loadingState">
+                    <i class="fa fa-spinner animate-spin"></i>    
+                </template>
+                <span x-text="loadingState ? `Loading...` : `Tambah Data`"></span>
             </button>
         </x-slot>
         
@@ -56,9 +63,18 @@
                     <i class="fa fa-times-circle"></i>
                     Cancel
                 </button>
-                <button type="submit" class="relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400">
-                    <i class="fa fa-check-circle"></i>
-                    Save
+                <button type="submit" 
+                    class="relative text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400"
+                    :class="loadingState ? `disabled cursor-wait bg-blue-700` : `bg-blue-500 hover:bg-blue-700`"
+                    :disabled="loadingState"
+                >
+                    <template x-if="!loadingState">
+                        <i class="fa fa-check-circle"></i>    
+                    </template>
+                    <template x-if="loadingState">
+                        <i class="fa fa-spinner animate-spin"></i>    
+                    </template> 
+                    <span x-text="loadingState ? `Loading...` : `Save`" ></span>
                 </button>
             </div>
         </form>
@@ -90,15 +106,33 @@
                     <td class="px-4 py-3 flex items-center">
                         <template x-if="row.type != 'core'">
                             <div>
-                                <button class="inline-flex items-center justify-center w-8 h-8 mr-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-full focus:shadow-outline hover:bg-indigo-800" @click="editData(row.id)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                    </svg>
+                                <button 
+                                :disabled="loadingState"
+                                class="inline-flex items-center justify-center w-8 h-8 mr-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-full focus:shadow-outline hover:bg-indigo-800 
+                                        disabled:cursor-wait disabled:bg-indigo-800" @click="editData(row.id)">
+                                    <template x-if="!loadingState">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        </svg>
+                                    </template>
+                                    <template x-if="loadingState">
+                                        <i class="fa fa-spinner animate-spin"></i>
+                                    </template>
                                 </button>
-                                <button class="inline-flex items-center justify-center w-8 h-8 mr-2 text-indigo-100 transition-colors duration-150 bg-orange-700 rounded-full focus:shadow-outline hover:bg-orange-800" @click="confirmDelete(row.id)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
+                                <button 
+                                :disabled="loadingState"
+                                class="inline-flex items-center justify-center w-8 h-8 mr-2 text-indigo-100 transition-colors duration-150 bg-orange-700 rounded-full focus:shadow-outline hover:bg-orange-800 
+                                        disabled:cursor-wait disabled:bg-orange-800 " @click="confirmDelete(row.id)">
+                                    
+                                    
+                                    <template x-if="!loadingState">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </template>
+                                    <template x-if="loadingState">
+                                        <i class="fa fa-spinner animate-spin"></i>
+                                    </template>
                                 </button>
                             </div>
                         </template>
