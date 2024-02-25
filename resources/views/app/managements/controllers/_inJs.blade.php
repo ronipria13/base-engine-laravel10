@@ -119,6 +119,7 @@
             },
             confirmDelete(id = 0) {
                 this.idData = id
+                this.loadingState = true
                 Swal.fire({
                 title: 'Hapus data ini?',
                 text: "data yang sudah dihapus tidak dapat dikembalikan!",
@@ -131,6 +132,7 @@
                     if (result.isConfirmed) {
                         this.deleteData()
                     }
+                    else this.loadingState = false
                 })
             },
             async deleteData() {
