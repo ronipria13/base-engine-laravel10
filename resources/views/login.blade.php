@@ -14,7 +14,7 @@
             <div class="absolute bg-black opacity-60 inset-0 z-0"></div>
             <div class="w-full px-24 z-10">
                 <h1 class="text-7xl font-bold text-left tracking-wide">{{ env('APP_NAME') }}</h1>
-                <p class="text-3xl my-4">Single Sign On</p>
+                <p class="text-3xl my-4">Base-Engine</p>
             </div>
 
         </div>
@@ -30,7 +30,7 @@
                     <span class="w-10 h-10 items-center justify-center inline-flex rounded-full font-bold text-lg border-2 border-white">in</span>
                 </div> --}}
                 <p class="text-gray-100 py-6 text-4xl font-weight-bolder">
-                    SSO Sumbarprov
+                    Base-Engine
                 </p>
                 <p class="text-gray-100">
                     Silakan login

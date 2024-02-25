@@ -1,9 +1,11 @@
-<div x-show="roleOpen" @click="roleOpen = false"
-                class="fixed inset-0 h-full w-full z-10" style="display: none;"></div>
-
-<div x-show="roleOpen"
-    class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl overflow-hidden z-10"
-    style="width: 20rem; display: none;">
+<div x-show="roleOpen" @click.away="roleOpen=false"
+    class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl overflow-hidden z-10" 
+    x-transition:enter="ease-in duration-200"
+    x-transition:enter-start="opacity-0 transform origin-top scale-y-0"
+    x-transition:enter-end="opacity-100 transform origin-top scale-y-100"
+    x-transition:leave="ease-out duration-200"
+    x-transition:leave-start="opacity-100 transform origin-top scale-y-100"
+    x-transition:leave-end="opacity-0 transform origin-top scale-y-0">
     @if(!empty($roles))
     @foreach ($roles as $role)
         @if( $role['id'] == session()->get('current_role'))

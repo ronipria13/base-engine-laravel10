@@ -25,7 +25,7 @@
     <div class="flex items-center">
         <div x-data="{ roleOpen: false }" class="relative">
             <button @click="roleOpen = ! roleOpen"
-                class="flex mx-4 text-gray-600 focus:outline-none">
+                class="flex mx-4 text-gray-600 focus:outline-none hover:border-b border-black">
                 <p class="mr-2 font-bold md:block hidden">
 
                     @if (session()->has('current_role_name'))
@@ -44,16 +44,20 @@
 
         <div x-data="{ dropdownOpen: false }" class="relative">
             <button @click="dropdownOpen = ! dropdownOpen"
-                class="relative block h-8 w-8 rounded-full overflow-hidden shadow focus:outline-none">
+                class="relative block h-8 w-8 rounded-full overflow-hidden shadow focus:outline-none border-2 hover:border-blue-600">
                 <img class="h-full w-full object-cover"
                     src="{{ asset('images/avatar/default-user-icon.jpg') }}"
                     alt="Your avatar">
             </button>
 
-            <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 h-full w-full z-10"
-                style="display: none;"></div>
-
-            <div x-show="dropdownOpen"
+            <div x-show="dropdownOpen" x-cloak
+                x-transition:enter="ease-in duration-200"
+                x-transition:enter-start="opacity-0 transform origin-top scale-y-0"
+                x-transition:enter-end="opacity-100 transform origin-top scale-y-100"
+                x-transition:leave="ease-out duration-200"
+                x-transition:leave-start="opacity-100 transform origin-top scale-y-100"
+                x-transition:leave-end="opacity-0 transform origin-top scale-y-0"
+                @click.away="dropdownOpen = false"
                 class="absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10"
                 style="display: none;">
                 <a href="{{ env('APP_URL') }}/profile"
