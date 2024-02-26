@@ -6,6 +6,7 @@
             formState : 'save',
             idData : null,
             loadingSave: false,
+            loadingState: false,
             successAlert: {
                 open: false,
                 message: ''
@@ -26,6 +27,7 @@
             },
             async getPermissions() {
                 try {
+                    this.loadingState = true
                     const response = await axios.get('{{ env('APP_URL') }}/managements/permissions/showall/'+this.form.role_id);
                     if(response.status == 200) {
                         this.form.permissions = response.data.permissions;
@@ -34,9 +36,10 @@
                             this.form.action_id.push(permission.action_id); 
                         }) : null
                         this.statusChecked();
+                        this.loadingState = false
                     }
                 } catch (e) {
-                    console.log(e);
+                    this.loadingState = false
                     Swal.fire({
                         icon: 'error',
                         title: "Permissions failed to load",
@@ -153,13 +156,15 @@
             controllers: [],
             async getActions() {
                 try {
+                    this.loadingState = true
                     const response = await axios.get('{{ env('APP_URL') }}/managements/actions/showall/all');
                     if(response.status == 200) {
                         this.actions = response.data.actions;
                         this.renderActions()
+                        this.loadingState = false
                     }
                 } catch (e) {
-                        
+                    this.loadingState = false
                     Swal.fire({
                         icon: 'error',
                         title: "Actions failed to load",

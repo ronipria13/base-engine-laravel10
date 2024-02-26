@@ -38,9 +38,19 @@
             </div>
         </form>
     </div>
-    <div class="container my-10 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5" x-init="getActions" x-html="actionDom">
+    <div x-show="!loadingState" x-cloak class="container my-10 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5" x-init="getActions" x-html="actionDom">
         <div class="bg-gray-900 py-4 px-5 xl:col-span-4 lg:col-span-3 md:col-span-2">
-            <h2 class="text-center text-xl font-bold text-white">Loading...</h2>
+            <h2 class="text-center text-xl font-bold text-white">
+                Loading...
+            </h2>
+        </div>
+    </div>
+    <div x-show="loadingState" x-cloak class="container my-10 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
+        <div class="bg-gray-900 py-4 px-5 xl:col-span-4 lg:col-span-3 md:col-span-2">
+            <h2 class="text-center text-xl font-bold text-white">
+                <i class="fa fa-spinner animate-spin"></i>
+                Loading...
+            </h2>
         </div>
     </div>
 </div>
