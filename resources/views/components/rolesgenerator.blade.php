@@ -1,4 +1,4 @@
-<div x-show="roleOpen" @click.away="roleOpen=false"
+<div x-show="roleOpen" @click.away="roleOpen=false" x-cloak
     class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl overflow-hidden z-10" 
     x-transition:enter="ease-in duration-200"
     x-transition:enter-start="opacity-0 transform origin-top scale-y-0"

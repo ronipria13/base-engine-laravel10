@@ -6,23 +6,41 @@
 <h3 class="text-gray-700 text-3xl font-medium">{{ $module->module_name }} Module</h3>
 <div class="container bg-white p-10 my-10" x-data="actionsCrud()">
     {{-- <button class="relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="livewire.emit('refreshUser')">Refresh Table</button> --}}
-    <div x-show="successAlert.open" class="relative py-3 pl-4 pr-10 leading-normal text-blue-700 bg-blue-100 rounded-lg mb-3" role="alert">
+    <div x-show="successAlert.open" x-cloak class="relative py-3 pl-4 pr-10 leading-normal text-blue-700 bg-blue-100 rounded-lg mb-3 ease-in-out duration-200" role="alert">
         <p x-text="successAlert.message">A simple alert with text and a right icon</p>
         <span class="absolute inset-y-0 right-0 flex items-center mr-4" @click="successAlert.open = false">
           <svg class="w-4 h-4 fill-current" role="button" viewBox="0 0 20 20"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
         </span>
     </div>
+            
     <x-modal :value="1">
         <x-slot name="trigger">
+            <a href="/managements/modules"
+            class="relative bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-3 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400 mr-2">
+                <i class="fa fa-arrow-left"></i>
+            </a>
             <button  @click="addData"
-            class="relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400">
-                <i class="fa fa-plus"></i>
-                Tambah Data
+            class="relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400 disabled:cursor-wait disabled:bg-blue-700"
+            :disabled="loadingState"
+            >
+                <template x-if="!loadingState">
+                    <i class="fa fa-plus"></i>
+                </template>
+                <template x-if="loadingState">
+                    <i class="fa fa-spinner animate-spin"></i>    
+                </template>
+                <span x-text="loadingState ? `Loading...` : `Tambah Data`"></span>
             </button>
             <button  x-show="selectedActions.length > 0" @click="confirmDelete"
             class="relative bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400">
-                <i class="fa fa-trash"></i>
-                Delete
+                
+                <template x-if="!loadingState">
+                    <i class="fa fa-trash"></i>
+                </template>
+                <template x-if="loadingState">
+                    <i class="fa fa-spinner animate-spin"></i>    
+                </template>
+                <span x-text="loadingState ? `Loading...` : `Delete`"></span>
             </button>
         </x-slot>
         
@@ -82,9 +100,18 @@
                     <i class="fa fa-times-circle"></i>
                     Cancel
                 </button>
-                <button type="submit" class="relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400">
-                    <i class="fa fa-check-circle"></i>
-                    Save
+                <button type="submit" 
+                    class="relative text-white font-bold py-2 px-4 rounded mb-2 focus:outline-none focus:ring-4 focus:ring-aqua-400"
+                    :class="loadingState ? `disabled cursor-wait bg-blue-700` : `bg-blue-500 hover:bg-blue-700`"
+                    :disabled="loadingState"
+                >
+                    <template x-if="!loadingState">
+                        <i class="fa fa-check-circle"></i>    
+                    </template>
+                    <template x-if="loadingState">
+                        <i class="fa fa-spinner animate-spin"></i>    
+                    </template> 
+                    <span x-text="loadingState ? `Loading...` : `Save`" ></span>
                 </button>
             </div>
         </form>

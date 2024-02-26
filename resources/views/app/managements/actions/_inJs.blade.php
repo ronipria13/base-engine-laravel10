@@ -6,6 +6,7 @@
         return {
             openModal : false,
             formState : 'save',
+            loadingState: false,
             idData : null,
             module_id: "{{ $module->id }}",
             functionsTomSelect : null,
@@ -39,6 +40,8 @@
             },
             confirmSave() {
                 const title = this.formState == 'edit' ? 'Ubah data?' : 'Simpan data?'
+                this.loadingState = true
+
                 Swal.fire({
                 title: title,
                 text: "pastikan data yang diinputkan sudah benar!",
@@ -51,6 +54,7 @@
                     if (result.isConfirmed) {
                         this.saveData()
                     }
+                    else this.loadingState = false
                 })
             },
             async saveData() {
@@ -73,8 +77,10 @@
                             this.openModal = false
                             this.resetForm()
                             this.getActions()
+                            this.loadingState = false
                         }
                     } catch (e) {
+                        this.loadingState = false
                         if(e.response.status == 422) {
                             Swal.fire({
                                 icon: 'error',
@@ -93,31 +99,9 @@
                     }
                 
             },
-            async editData(id = 0) {
-                this.resetForm();
-                this.idData = id
-                this.formState = 'edit'
-                try {
-                    const response = await axios.get('{{ env('APP_URL') }}/managements/controllers/'+id);
-                    if(response.status == 200) {
-                        const dataApi = response.data.controller;
-                        this.form = {
-                            controller_name: dataApi.controller_name,
-                            controller_desc: dataApi.controller_desc,
-                        }
-                        this.openModal = true
-                    }
-                } catch (e) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: "something went wrong",
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            },
             confirmDelete() {
-
+                this.loadingState = true
+                
                 Swal.fire({
                 title: 'Hapus data ini?',
                 text: "data yang sudah dihapus tidak dapat dikembalikan!",
@@ -130,6 +114,7 @@
                     if (result.isConfirmed) {
                         this.deleteData()
                     }
+                    else this.loadingState = false
                 })
             },
             async deleteData() {
@@ -150,8 +135,12 @@
                             message: response.data.message
                         }
                         this.getActions()
+                        this.loadingState = false
+                        this.selectedActions = []
                     }
                 } catch (e) {
+                    this.loadingState = false
+                    this.selectedActions = []
                     Swal.fire({
                         icon: 'error',
                         title: "something went wrong",
