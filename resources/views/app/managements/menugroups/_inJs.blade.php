@@ -5,6 +5,7 @@
             datatable: datatable(),
             openModal : false,
             formState : 'save',
+            loadingState: false,
             idData : null,
             successAlert: {
                 open: false,
@@ -32,6 +33,7 @@
             },
             confirmSave() {
                 const title = this.formState == 'edit' ? 'Ubah data?' : 'Simpan data?'
+                this.loadingState = true
                 
                 Swal.fire({
                 title: title,
@@ -45,6 +47,7 @@
                     if (result.isConfirmed) {
                         this.saveData()
                     }
+                    else this.loadingState = false
                 })
             },
             async saveData() {
@@ -67,10 +70,11 @@
                             this.openModal = false
                             this.resetForm()
                             this.datatable.refreshTable()
+                            this.loadingState = false
                         }
                     } catch (e) {
                         if(e.response.status == 422) {
-                            console.log(e.response);
+                            this.loadingState = false
                             Swal.fire({
                                 icon: 'error',
                                 title: e.response.data.message,
@@ -92,6 +96,7 @@
                 this.resetForm();
                 this.idData = id
                 this.formState = 'edit'
+                this.loadingState = true
                 try {
                     const response = await axios.get('{{ env('APP_URL') }}/managements/menugroups/'+id);
                     if(response.status == 200) {
@@ -102,9 +107,10 @@
                             menugroup_order: dataApi.menugroup_order,
                         }
                         this.openModal = true
+                        this.loadingState = false
                     }
                 } catch (e) {
-                    console.log(e.response);
+                    this.loadingState = false
                     Swal.fire({
                         icon: 'error',
                         title: "something went wrong",
@@ -115,6 +121,7 @@
             },
             confirmDelete(id = 0) {
                 this.idData = id
+                this.loadingState = true
                 Swal.fire({
                 title: 'Hapus data ini?',
                 text: "data yang sudah dihapus tidak dapat dikembalikan!",
@@ -127,6 +134,7 @@
                     if (result.isConfirmed) {
                         this.deleteData()
                     }
+                    else this.loadingState = false
                 })
             },
             async deleteData() {
@@ -146,9 +154,10 @@
                             message: response.data.message
                         }
                         this.datatable.refreshTable()
+                        this.loadingState = false
                     }
                 } catch (e) {
-                    console.log(e.response);
+                    this.loadingState = false
                     Swal.fire({
                         icon: 'error',
                         title: "something went wrong",
